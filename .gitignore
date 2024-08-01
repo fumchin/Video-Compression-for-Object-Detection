@@ -1,0 +1,6 @@
+**/datasets/
+.vscode/
+*.jpg
+*.jpeg
+*.txt
+*.png
