@@ -1,0 +1,38 @@
+cpu-bind=MASK - bp1-gpu001, task  0  0 [35070]: mask 0x101 set
+/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/dataloader.py:474: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+Traceback (most recent call last):
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 431, in <module>
+    main(sys.argv[1:])
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 400, in main
+    train_one_epoch(
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 163, in train_one_epoch
+    for i, d in enumerate(train_dataloader):
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 517, in __next__
+    data = self._next_data()
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1199, in _next_data
+    return self._process_data(data)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 1225, in _process_data
+    data.reraise()
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/_utils.py", line 429, in reraise
+    raise self.exc_type(msg)
+ValueError: Caught ValueError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/_utils/worker.py", line 202, in _worker_loop
+    data = fetcher.fetch(index)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/_utils/fetch.py", line 44, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/_utils/fetch.py", line 44, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/datasets/image.py", line 77, in __getitem__
+    return self.transform(img)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torchvision/transforms/transforms.py", line 60, in __call__
+    img = t(img)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torchvision/transforms/transforms.py", line 596, in forward
+    i, j, h, w = self.get_params(img, self.size)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torchvision/transforms/transforms.py", line 552, in get_params
+    raise ValueError(
+ValueError: Required crop size (256, 256) is larger then input image size (141, 640)
+

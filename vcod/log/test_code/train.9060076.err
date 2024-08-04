@@ -1,0 +1,25 @@
+cpu-bind=MASK - bp1-compute015, task  0  0 [167325]: mask 0x80000008000000 set
+Traceback (most recent call last):
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 47, in <module>
+    from compressai.datasets import ImageFolder
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/__init__.py", line 30, in <module>
+    from compressai import datasets, entropy_models, layers, models, ops
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/__init__.py", line 31, in <module>
+    from .layers import *
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/layers.py", line 41, in <module>
+    from .natten import NeighborhoodAttention
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/natten/__init__.py", line 7, in <module>
+    from .nattencuda1d import NeighborhoodAttention1D
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/natten/nattencuda1d.py", line 20, in <module>
+    natten1dav_cuda = load(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1079, in load
+    return _jit_compile(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1292, in _jit_compile
+    _write_ninja_file_and_build_library(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1381, in _write_ninja_file_and_build_library
+    extra_ldflags = _prepare_ldflags(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1489, in _prepare_ldflags
+    extra_ldflags.append(f'-L{_join_cuda_home("lib64")}')
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1982, in _join_cuda_home
+    raise EnvironmentError('CUDA_HOME environment variable is not set. '
+OSError: CUDA_HOME environment variable is not set. Please set it to your CUDA install root.

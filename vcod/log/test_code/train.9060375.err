@@ -1,0 +1,11 @@
+cpu-bind=MASK - bp1-compute003, task  0  0 [101506]: mask 0x1000001 set
+Traceback (most recent call last):
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 47, in <module>
+    from compressai.datasets import ImageFolder
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/__init__.py", line 30, in <module>
+    from compressai import datasets, entropy_models, layers, models, ops
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/entropy_models/__init__.py", line 30, in <module>
+    from .entropy_models import EntropyBottleneck, EntropyModel, GaussianConditional
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/entropy_models/entropy_models.py", line 42, in <module>
+    from compressai._CXX import pmf_to_quantized_cdf as _pmf_to_quantized_cdf
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.20' not found (required by /user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/_CXX.cpython-39-x86_64-linux-gnu.so)

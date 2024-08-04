@@ -1,0 +1,25 @@
+cpu-bind=MASK - bp1-compute002, task  0  0 [93532]: mask 0x1000001 set
+Traceback (most recent call last):
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 47, in <module>
+    from compressai.datasets import ImageFolder
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/__init__.py", line 30, in <module>
+    from compressai import datasets, entropy_models, layers, models, ops
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/__init__.py", line 31, in <module>
+    from .layers import *
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/layers.py", line 41, in <module>
+    from .natten import NeighborhoodAttention
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/natten/__init__.py", line 7, in <module>
+    from .nattencuda1d import NeighborhoodAttention1D
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/natten/nattencuda1d.py", line 20, in <module>
+    natten1dav_cuda = load(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1079, in load
+    return _jit_compile(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1292, in _jit_compile
+    _write_ninja_file_and_build_library(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1391, in _write_ninja_file_and_build_library
+    _write_ninja_file_to_build_library(
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1782, in _write_ninja_file_to_build_library
+    cuda_flags = common_cflags + COMMON_NVCC_FLAGS + _get_cuda_arch_flags()
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/cpp_extension.py", line 1561, in _get_cuda_arch_flags
+    arch_list[-1] += '+PTX'
+IndexError: list index out of range

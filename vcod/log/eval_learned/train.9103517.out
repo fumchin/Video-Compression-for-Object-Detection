@@ -1,0 +1,168 @@
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      24.566980618065035
+    ],
+    "ms-ssim": [
+      0.9227972804585258
+    ],
+    "bpp": [
+      0.11449514640649472
+    ],
+    "encoding_time": [
+      0.12364634442984192
+    ],
+    "decoding_time": [
+      0.09585952378436322
+    ]
+  }
+}
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      25.535646791911194
+    ],
+    "ms-ssim": [
+      0.9368161630721971
+    ],
+    "bpp": [
+      0.1752331620228279
+    ],
+    "encoding_time": [
+      0.12342423605033
+    ],
+    "decoding_time": [
+      0.09637339357798241
+    ]
+  }
+}
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      26.405215449790187
+    ],
+    "ms-ssim": [
+      0.94625676331834
+    ],
+    "bpp": [
+      0.24985950244053357
+    ],
+    "encoding_time": [
+      0.12420556661770686
+    ],
+    "decoding_time": [
+      0.0976792403010829
+    ]
+  }
+}
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      27.310106191464556
+    ],
+    "ms-ssim": [
+      0.9534306878973287
+    ],
+    "bpp": [
+      0.3450817007857174
+    ],
+    "encoding_time": [
+      0.1250567709205609
+    ],
+    "decoding_time": [
+      0.09888025213135271
+    ]
+  }
+}
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      28.200329268115926
+    ],
+    "ms-ssim": [
+      0.9592067494458837
+    ],
+    "bpp": [
+      0.4839902511106716
+    ],
+    "encoding_time": [
+      0.1241160282121914
+    ],
+    "decoding_time": [
+      0.098196053302731
+    ]
+  }
+}
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      29.381585031115804
+    ],
+    "ms-ssim": [
+      0.963849671546111
+    ],
+    "bpp": [
+      0.6694213103831154
+    ],
+    "encoding_time": [
+      0.12784161585983436
+    ],
+    "decoding_time": [
+      0.10307106784934567
+    ]
+  }
+}
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      30.806059218574777
+    ],
+    "ms-ssim": [
+      0.9679311406776092
+    ],
+    "bpp": [
+      0.9313332262909452
+    ],
+    "encoding_time": [
+      0.12415126996394699
+    ],
+    "decoding_time": [
+      0.09829700696063927
+    ]
+  }
+}
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      32.69501817113246
+    ],
+    "ms-ssim": [
+      0.9712875395989187
+    ],
+    "bpp": [
+      1.3168107375499258
+    ],
+    "encoding_time": [
+      0.12410643128663157
+    ],
+    "decoding_time": [
+      0.09847623735714421
+    ]
+  }
+}

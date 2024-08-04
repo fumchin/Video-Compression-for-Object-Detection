@@ -1,0 +1,5 @@
+cpu-bind=MASK - bp1-compute015, task  0  0 [166248]: mask 0x80000008000000 set
+Traceback (most recent call last):
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 47, in <module>
+    from compressai.datasets import ImageFolder
+ModuleNotFoundError: No module named 'compressai'

@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: natcuda
+Version: 0.12
+Summary: Neighborhood Attention CUDA Kernel
+Author: Ali Hassani
+Author-email: alih@uoregon.edu

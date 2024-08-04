@@ -1,0 +1,12 @@
+cpu-bind=MASK - bp1-compute019, task  0  0 [172012]: mask 0x10000001000000 set
+usage: train.py [-h]
+                [-m {bmshj2018-factorized,bmshj2018-factorized-relu,bmshj2018-hyperprior,mbt2018-mean,mbt2018,cheng2020-anchor,cheng2020-attn,bmshj2018-hyperprior-vbr,mbt2018-mean-vbr,mbt2018-vbr}]
+                -d DATASET [-e EPOCHS] [-lr LEARNING_RATE] [-n NUM_WORKERS]
+                [-q QUALITY_LEVEL] [--lambda LMBDA] [--batch-size BATCH_SIZE]
+                [--test-batch-size TEST_BATCH_SIZE]
+                [--aux-learning-rate AUX_LEARNING_RATE]
+                [--patch-size PATCH_SIZE PATCH_SIZE] [--cuda]
+                [--gpu-id GPU_ID] [--save] [--seed SEED]
+                [--clip_max_norm CLIP_MAX_NORM] [--name NAME]
+                [--checkpoint CHECKPOINT]
+train.py: error: argument -m/--model: invalid choice: 'tinylic' (choose from 'bmshj2018-factorized', 'bmshj2018-factorized-relu', 'bmshj2018-hyperprior', 'mbt2018-mean', 'mbt2018', 'cheng2020-anchor', 'cheng2020-attn', 'bmshj2018-hyperprior-vbr', 'mbt2018-mean-vbr', 'mbt2018-vbr')

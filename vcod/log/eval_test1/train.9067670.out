@@ -1,0 +1,21 @@
+{
+  "name": "tinylic",
+  "description": "Inference (ans)",
+  "results": {
+    "psnr": [
+      30.56787957962328
+    ],
+    "ms-ssim": [
+      0.9508686766196915
+    ],
+    "bpp": [
+      0.6518427913733523
+    ],
+    "encoding_time": [
+      0.1240462913555552
+    ],
+    "decoding_time": [
+      0.09608958524340382
+    ]
+  }
+}

@@ -4,3 +4,7 @@
 *.jpeg
 *.txt
 *.png
+*.pt
+*.tar
+*.log
+*.tar.gz

@@ -1,0 +1,394 @@
+2024-07-09 13:53:13,955 [INFO ]  Logging file is ./checkpoints/tinylic/3//20240709_135313.log
+2024-07-09 13:53:13,956 [INFO ]  ======================= 2024-07-09_13_53_13 =======================
+2024-07-09 13:53:13,956 [INFO ]  model:tinylic
+2024-07-09 13:53:13,956 [INFO ]  dataset:../../../dataset/PASCAL/all
+2024-07-09 13:53:13,956 [INFO ]  epochs:400
+2024-07-09 13:53:13,956 [INFO ]  learning_rate:0.0001
+2024-07-09 13:53:13,956 [INFO ]  num_workers:4
+2024-07-09 13:53:13,956 [INFO ]  quality_level:3
+2024-07-09 13:53:13,956 [INFO ]  lmbda:0.01
+2024-07-09 13:53:13,956 [INFO ]  batch_size:4
+2024-07-09 13:53:13,956 [INFO ]  test_batch_size:1
+2024-07-09 13:53:13,956 [INFO ]  aux_learning_rate:0.001
+2024-07-09 13:53:13,957 [INFO ]  patch_size:(256, 256)
+2024-07-09 13:53:13,957 [INFO ]  cuda:True
+2024-07-09 13:53:13,957 [INFO ]  gpu_id:0
+2024-07-09 13:53:13,957 [INFO ]  save:True
+2024-07-09 13:53:13,957 [INFO ]  seed:None
+2024-07-09 13:53:13,957 [INFO ]  clip_max_norm:1.0
+2024-07-09 13:53:13,957 [INFO ]  name:2024-07-09_13_53_13
+2024-07-09 13:53:13,957 [INFO ]  checkpoint:None
+2024-07-09 13:53:13,957 [INFO ]  ===================================================================
+Skipping ../../../dataset/PASCAL/all/train/008919.jpg due to size (378, 250) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008320.jpg due to size (250, 198) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/005337.jpg due to size (500, 223) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002382.jpg due to size (360, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000947.jpg due to size (238, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/004950.jpg due to size (320, 196) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006396.jpg due to size (500, 170) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002281.jpg due to size (500, 238) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007819.jpg due to size (500, 208) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000306.jpg due to size (500, 176) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007234.jpg due to size (320, 214) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/004694.jpg due to size (252, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006447.jpg due to size (310, 233) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001203.jpg due to size (350, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006886.jpg due to size (500, 254) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000262.jpg due to size (500, 196) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001741.jpg due to size (400, 254) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006569.jpg due to size (500, 229) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007924.jpg due to size (238, 360) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006781.jpg due to size (234, 367) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008633.jpg due to size (500, 247) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007056.jpg due to size (230, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003292.jpg due to size (360, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000776.jpg due to size (500, 200) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/009288.jpg due to size (213, 319) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007258.jpg due to size (393, 164) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008053.jpg due to size (244, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/004468.jpg due to size (174, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007979.jpg due to size (500, 202) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008468.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006455.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000200.jpg due to size (500, 249) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/009303.jpg due to size (500, 99) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002976.jpg due to size (251, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006392.jpg due to size (320, 214) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006524.jpg due to size (500, 97) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001676.jpg due to size (500, 236) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002594.jpg due to size (500, 235) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003848.jpg due to size (500, 176) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007204.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002352.jpg due to size (500, 198) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007113.jpg due to size (127, 400) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008338.jpg due to size (500, 168) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/005389.jpg due to size (432, 244) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006501.jpg due to size (500, 211) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/005434.jpg due to size (212, 320) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007909.jpg due to size (270, 210) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008886.jpg due to size (241, 203) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/009468.jpg due to size (320, 229) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002935.jpg due to size (314, 235) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003024.jpg due to size (500, 208) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007275.jpg due to size (300, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002070.jpg due to size (500, 189) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001172.jpg due to size (500, 187) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003948.jpg due to size (320, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000705.jpg due to size (500, 234) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000411.jpg due to size (240, 320) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/004876.jpg due to size (500, 248) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/005260.jpg due to size (500, 235) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002391.jpg due to size (237, 360) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001557.jpg due to size (500, 139) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000463.jpg due to size (500, 175) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002273.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007323.jpg due to size (228, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/007923.jpg due to size (500, 235) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/009679.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001346.jpg due to size (500, 229) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008983.jpg due to size (500, 203) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008995.jpg due to size (156, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000109.jpg due to size (500, 254) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003103.jpg due to size (361, 226) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003586.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003898.jpg due to size (500, 185) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/009114.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/004675.jpg due to size (500, 190) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/005576.jpg due to size (500, 109) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/003939.jpg due to size (500, 198) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008923.jpg due to size (500, 209) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001464.jpg due to size (500, 215) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000194.jpg due to size (320, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/001064.jpg due to size (320, 216) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/009255.jpg due to size (257, 200) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/000849.jpg due to size (200, 368) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002427.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/002848.jpg due to size (500, 96) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/008213.jpg due to size (500, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/006562.jpg due to size (500, 247) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/train/005047.jpg due to size (500, 252) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/002204.jpg due to size (320, 226) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005043.jpg due to size (500, 254) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005892.jpg due to size (500, 201) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008910.jpg due to size (288, 242) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005944.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008804.jpg due to size (320, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000629.jpg due to size (500, 230) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001794.jpg due to size (212, 320) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007784.jpg due to size (500, 230) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005616.jpg due to size (500, 214) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005482.jpg due to size (500, 221) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000378.jpg due to size (212, 320) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008205.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004029.jpg due to size (500, 195) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003533.jpg due to size (500, 203) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000788.jpg due to size (240, 320) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004638.jpg due to size (500, 197) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007428.jpg due to size (308, 231) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006491.jpg due to size (500, 171) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005967.jpg due to size (320, 223) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005228.jpg due to size (500, 219) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003173.jpg due to size (320, 217) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009054.jpg due to size (242, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008571.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006039.jpg due to size (500, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009941.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000351.jpg due to size (332, 220) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000861.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004529.jpg due to size (500, 229) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004219.jpg due to size (448, 255) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003742.jpg due to size (240, 320) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003692.jpg due to size (500, 250) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009096.jpg due to size (344, 208) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005890.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001637.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006793.jpg due to size (320, 216) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006021.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001044.jpg due to size (392, 184) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004900.jpg due to size (170, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007623.jpg due to size (320, 218) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008052.jpg due to size (500, 180) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004590.jpg due to size (400, 222) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009555.jpg due to size (500, 238) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001744.jpg due to size (500, 176) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000852.jpg due to size (500, 223) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008808.jpg due to size (300, 200) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004061.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000662.jpg due to size (500, 246) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007229.jpg due to size (300, 220) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003584.jpg due to size (320, 236) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007719.jpg due to size (221, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003842.jpg due to size (224, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004932.jpg due to size (320, 218) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008500.jpg due to size (432, 231) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009403.jpg due to size (350, 249) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003764.jpg due to size (320, 203) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006307.jpg due to size (500, 187) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006566.jpg due to size (207, 298) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001146.jpg due to size (148, 316) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003925.jpg due to size (320, 242) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/002746.jpg due to size (500, 200) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000533.jpg due to size (500, 152) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005456.jpg due to size (320, 213) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001049.jpg due to size (500, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006672.jpg due to size (320, 216) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008457.jpg due to size (219, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007354.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007288.jpg due to size (500, 243) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004749.jpg due to size (320, 233) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005691.jpg due to size (220, 500) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/002453.jpg due to size (500, 209) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005798.jpg due to size (500, 195) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008334.jpg due to size (500, 199) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/002122.jpg due to size (300, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001692.jpg due to size (320, 225) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005137.jpg due to size (500, 156) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003582.jpg due to size (500, 216) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003531.jpg due to size (212, 320) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006037.jpg due to size (500, 207) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008802.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007401.jpg due to size (320, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004800.jpg due to size (500, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/002341.jpg due to size (300, 250) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009120.jpg due to size (500, 242) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007861.jpg due to size (500, 229) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007730.jpg due to size (230, 360) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004084.jpg due to size (320, 219) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001398.jpg due to size (250, 175) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008059.jpg due to size (320, 203) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000623.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006311.jpg due to size (448, 252) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001087.jpg due to size (250, 333) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006274.jpg due to size (500, 245) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008246.jpg due to size (500, 255) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003591.jpg due to size (500, 181) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008147.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001317.jpg due to size (194, 264) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006034.jpg due to size (310, 139) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007596.jpg due to size (500, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001792.jpg due to size (500, 236) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006227.jpg due to size (337, 139) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003096.jpg due to size (300, 224) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006383.jpg due to size (500, 185) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001592.jpg due to size (500, 250) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003853.jpg due to size (500, 245) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/008611.jpg due to size (500, 236) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/006811.jpg due to size (320, 226) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/005513.jpg due to size (320, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/007944.jpg due to size (500, 212) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003257.jpg due to size (500, 240) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/000126.jpg due to size (500, 215) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/002018.jpg due to size (500, 158) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009775.jpg due to size (204, 430) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/004758.jpg due to size (184, 328) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/003232.jpg due to size (320, 223) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/001474.jpg due to size (500, 221) being below threshold (256, 256).
+Skipping ../../../dataset/PASCAL/all/test/009369.jpg due to size (320, 206) being below threshold (256, 256).
+2024-07-09 13:55:01,816 [INFO ]  ======Current epoch 0 ======
+2024-07-09 13:55:01,819 [INFO ]  Learning rate: 0.0001
+2024-07-09 13:55:03,068 [INFO ]  [0/4923] | Loss: 839.717 | MSE loss: 1.27305 | Bpp loss: 11.9165 | Aux loss: 7918.87
+2024-07-09 14:05:45,002 [INFO ]  Test epoch 0: Average losses: Loss: 4.382 | MSE loss: 0.00512 | Bpp loss: 1.0558 | Aux loss: 7123.89
+
+2024-07-09 14:05:46,758 [INFO ]  ======Current epoch 1 ======
+2024-07-09 14:05:46,758 [INFO ]  Learning rate: 0.0001
+2024-07-09 14:05:47,454 [INFO ]  [0/4923] | Loss: 5.236 | MSE loss: 0.00581 | Bpp loss: 1.4567 | Aux loss: 7122.89
+2024-07-09 14:16:34,616 [INFO ]  Test epoch 1: Average losses: Loss: 3.248 | MSE loss: 0.00343 | Bpp loss: 1.0154 | Aux loss: 5943.97
+
+2024-07-09 14:16:36,173 [INFO ]  ======Current epoch 2 ======
+2024-07-09 14:16:36,174 [INFO ]  Learning rate: 0.0001
+2024-07-09 14:16:36,899 [INFO ]  [0/4923] | Loss: 3.863 | MSE loss: 0.00404 | Bpp loss: 1.2377 | Aux loss: 5942.96
+2024-07-09 14:27:23,273 [INFO ]  Test epoch 2: Average losses: Loss: 2.608 | MSE loss: 0.00255 | Bpp loss: 0.9478 | Aux loss: 4388.04
+
+2024-07-09 14:27:24,775 [INFO ]  ======Current epoch 3 ======
+2024-07-09 14:27:24,775 [INFO ]  Learning rate: 0.0001
+2024-07-09 14:27:25,494 [INFO ]  [0/4923] | Loss: 2.746 | MSE loss: 0.00237 | Bpp loss: 1.2031 | Aux loss: 4386.85
+2024-07-09 14:38:11,592 [INFO ]  Test epoch 3: Average losses: Loss: 2.304 | MSE loss: 0.00211 | Bpp loss: 0.9300 | Aux loss: 2421.91
+
+2024-07-09 14:38:13,094 [INFO ]  ======Current epoch 4 ======
+2024-07-09 14:38:13,094 [INFO ]  Learning rate: 0.0001
+2024-07-09 14:38:13,814 [INFO ]  [0/4923] | Loss: 2.296 | MSE loss: 0.00187 | Bpp loss: 1.0810 | Aux loss: 2420.12
+2024-07-09 14:49:00,210 [INFO ]  Test epoch 4: Average losses: Loss: 2.148 | MSE loss: 0.00196 | Bpp loss: 0.8720 | Aux loss: 1089.19
+
+2024-07-09 14:49:01,735 [INFO ]  ======Current epoch 5 ======
+2024-07-09 14:49:01,735 [INFO ]  Learning rate: 0.0001
+2024-07-09 14:49:02,459 [INFO ]  [0/4923] | Loss: 2.133 | MSE loss: 0.00172 | Bpp loss: 1.0158 | Aux loss: 1089.87
+2024-07-09 14:59:48,967 [INFO ]  Test epoch 5: Average losses: Loss: 1.865 | MSE loss: 0.00158 | Bpp loss: 0.8359 | Aux loss: 2007.08
+
+2024-07-09 14:59:50,510 [INFO ]  ======Current epoch 6 ======
+2024-07-09 14:59:50,510 [INFO ]  Learning rate: 0.0001
+2024-07-09 14:59:51,220 [INFO ]  [0/4923] | Loss: 1.950 | MSE loss: 0.00148 | Bpp loss: 0.9866 | Aux loss: 2008.42
+2024-07-09 15:10:38,490 [INFO ]  Test epoch 6: Average losses: Loss: 1.757 | MSE loss: 0.00147 | Bpp loss: 0.8010 | Aux loss: 2829.99
+
+2024-07-09 15:10:39,928 [INFO ]  ======Current epoch 7 ======
+2024-07-09 15:10:39,929 [INFO ]  Learning rate: 0.0001
+2024-07-09 15:10:40,642 [INFO ]  [0/4923] | Loss: 2.516 | MSE loss: 0.00195 | Bpp loss: 1.2472 | Aux loss: 2831.33
+2024-07-09 15:21:16,934 [INFO ]  Test epoch 7: Average losses: Loss: 1.723 | MSE loss: 0.00140 | Bpp loss: 0.8106 | Aux loss: 3463.24
+
+2024-07-09 15:21:18,469 [INFO ]  ======Current epoch 8 ======
+2024-07-09 15:21:18,469 [INFO ]  Learning rate: 0.0001
+2024-07-09 15:21:19,184 [INFO ]  [0/4923] | Loss: 2.873 | MSE loss: 0.00233 | Bpp loss: 1.3591 | Aux loss: 3464.67
+2024-07-09 15:31:52,672 [INFO ]  Test epoch 8: Average losses: Loss: 1.664 | MSE loss: 0.00134 | Bpp loss: 0.7928 | Aux loss: 4027.83
+
+2024-07-09 15:31:54,123 [INFO ]  ======Current epoch 9 ======
+2024-07-09 15:31:54,123 [INFO ]  Learning rate: 0.0001
+2024-07-09 15:31:54,806 [INFO ]  [0/4923] | Loss: 1.420 | MSE loss: 0.00091 | Bpp loss: 0.8251 | Aux loss: 4029.26
+2024-07-09 15:42:27,042 [INFO ]  Test epoch 9: Average losses: Loss: 1.620 | MSE loss: 0.00126 | Bpp loss: 0.8024 | Aux loss: 4430.18
+
+2024-07-09 15:42:28,543 [INFO ]  ======Current epoch 10 ======
+2024-07-09 15:42:28,543 [INFO ]  Learning rate: 0.0001
+2024-07-09 15:42:29,233 [INFO ]  [0/4923] | Loss: 1.739 | MSE loss: 0.00118 | Bpp loss: 0.9731 | Aux loss: 4431.18
+2024-07-09 15:53:02,025 [INFO ]  Test epoch 10: Average losses: Loss: 1.575 | MSE loss: 0.00121 | Bpp loss: 0.7866 | Aux loss: 4583.40
+
+2024-07-09 15:53:03,484 [INFO ]  ======Current epoch 11 ======
+2024-07-09 15:53:03,484 [INFO ]  Learning rate: 0.0001
+2024-07-09 15:53:04,182 [INFO ]  [0/4923] | Loss: 1.392 | MSE loss: 0.00095 | Bpp loss: 0.7725 | Aux loss: 4584.35
+2024-07-09 16:03:36,121 [INFO ]  Test epoch 11: Average losses: Loss: 1.598 | MSE loss: 0.00126 | Bpp loss: 0.7793 | Aux loss: 4488.77
+
+2024-07-09 16:03:36,920 [INFO ]  ======Current epoch 12 ======
+2024-07-09 16:03:36,920 [INFO ]  Learning rate: 0.0001
+2024-07-09 16:03:37,608 [INFO ]  [0/4923] | Loss: 1.945 | MSE loss: 0.00138 | Bpp loss: 1.0484 | Aux loss: 4489.46
+2024-07-09 16:14:09,178 [INFO ]  Test epoch 12: Average losses: Loss: 1.514 | MSE loss: 0.00115 | Bpp loss: 0.7689 | Aux loss: 4086.80
+
+2024-07-09 16:14:10,528 [INFO ]  ======Current epoch 13 ======
+2024-07-09 16:14:10,528 [INFO ]  Learning rate: 0.0001
+2024-07-09 16:14:11,218 [INFO ]  [0/4923] | Loss: 1.298 | MSE loss: 0.00079 | Bpp loss: 0.7816 | Aux loss: 4087.27
+2024-07-09 16:24:41,103 [INFO ]  Test epoch 13: Average losses: Loss: 1.521 | MSE loss: 0.00116 | Bpp loss: 0.7659 | Aux loss: 3424.02
+
+2024-07-09 16:24:41,867 [INFO ]  ======Current epoch 14 ======
+2024-07-09 16:24:41,867 [INFO ]  Learning rate: 0.0001
+2024-07-09 16:24:42,544 [INFO ]  [0/4923] | Loss: 2.614 | MSE loss: 0.00182 | Bpp loss: 1.4330 | Aux loss: 3424.88
+2024-07-09 16:35:14,706 [INFO ]  Test epoch 14: Average losses: Loss: 1.498 | MSE loss: 0.00112 | Bpp loss: 0.7674 | Aux loss: 2322.98
+
+2024-07-09 16:35:16,019 [INFO ]  ======Current epoch 15 ======
+2024-07-09 16:35:16,020 [INFO ]  Learning rate: 0.0001
+2024-07-09 16:35:16,732 [INFO ]  [0/4923] | Loss: 2.327 | MSE loss: 0.00151 | Bpp loss: 1.3448 | Aux loss: 2323.24
+2024-07-09 16:45:49,449 [INFO ]  Test epoch 15: Average losses: Loss: 1.488 | MSE loss: 0.00111 | Bpp loss: 0.7654 | Aux loss: 565.26
+
+2024-07-09 16:45:50,957 [INFO ]  ======Current epoch 16 ======
+2024-07-09 16:45:50,957 [INFO ]  Learning rate: 0.0001
+2024-07-09 16:45:51,640 [INFO ]  [0/4923] | Loss: 1.788 | MSE loss: 0.00117 | Bpp loss: 1.0279 | Aux loss: 565.56
+2024-07-09 16:56:22,566 [INFO ]  Test epoch 16: Average losses: Loss: 1.482 | MSE loss: 0.00112 | Bpp loss: 0.7559 | Aux loss: 99.68
+
+2024-07-09 16:56:23,990 [INFO ]  ======Current epoch 17 ======
+2024-07-09 16:56:23,990 [INFO ]  Learning rate: 0.0001
+2024-07-09 16:56:24,698 [INFO ]  [0/4923] | Loss: 1.333 | MSE loss: 0.00088 | Bpp loss: 0.7618 | Aux loss: 99.80
+2024-07-09 17:06:55,812 [INFO ]  Test epoch 17: Average losses: Loss: 1.447 | MSE loss: 0.00108 | Bpp loss: 0.7459 | Aux loss: 52.79
+
+2024-07-09 17:06:57,306 [INFO ]  ======Current epoch 18 ======
+2024-07-09 17:06:57,306 [INFO ]  Learning rate: 0.0001
+2024-07-09 17:06:57,943 [INFO ]  [0/4923] | Loss: 1.473 | MSE loss: 0.00095 | Bpp loss: 0.8525 | Aux loss: 52.84
+2024-07-09 17:17:29,332 [INFO ]  Test epoch 18: Average losses: Loss: 1.473 | MSE loss: 0.00110 | Bpp loss: 0.7550 | Aux loss: 41.55
+
+2024-07-09 17:17:30,112 [INFO ]  ======Current epoch 19 ======
+2024-07-09 17:17:30,114 [INFO ]  Learning rate: 0.0001
+2024-07-09 17:17:30,782 [INFO ]  [0/4923] | Loss: 1.255 | MSE loss: 0.00086 | Bpp loss: 0.6939 | Aux loss: 41.64
+2024-07-09 17:28:02,143 [INFO ]  Test epoch 19: Average losses: Loss: 1.405 | MSE loss: 0.00102 | Bpp loss: 0.7447 | Aux loss: 35.45
+
+2024-07-09 17:28:03,624 [INFO ]  ======Current epoch 20 ======
+2024-07-09 17:28:03,624 [INFO ]  Learning rate: 0.0001
+2024-07-09 17:28:04,301 [INFO ]  [0/4923] | Loss: 2.215 | MSE loss: 0.00142 | Bpp loss: 1.2887 | Aux loss: 35.56
+2024-07-09 17:38:33,299 [INFO ]  Test epoch 20: Average losses: Loss: 1.404 | MSE loss: 0.00102 | Bpp loss: 0.7438 | Aux loss: 30.43
+
+2024-07-09 17:38:34,836 [INFO ]  ======Current epoch 21 ======
+2024-07-09 17:38:34,836 [INFO ]  Learning rate: 0.0001
+2024-07-09 17:38:35,525 [INFO ]  [0/4923] | Loss: 1.817 | MSE loss: 0.00115 | Bpp loss: 1.0706 | Aux loss: 30.47
+2024-07-09 17:49:06,769 [INFO ]  Test epoch 21: Average losses: Loss: 1.409 | MSE loss: 0.00103 | Bpp loss: 0.7369 | Aux loss: 27.00
+
+2024-07-09 17:49:07,512 [INFO ]  ======Current epoch 22 ======
+2024-07-09 17:49:07,512 [INFO ]  Learning rate: 0.0001
+2024-07-09 17:49:08,187 [INFO ]  [0/4923] | Loss: 1.495 | MSE loss: 0.00093 | Bpp loss: 0.8910 | Aux loss: 27.25
+2024-07-09 17:59:38,948 [INFO ]  Test epoch 22: Average losses: Loss: 1.403 | MSE loss: 0.00102 | Bpp loss: 0.7376 | Aux loss: 24.37
+
+2024-07-09 17:59:40,304 [INFO ]  ======Current epoch 23 ======
+2024-07-09 17:59:40,304 [INFO ]  Learning rate: 0.0001
+2024-07-09 17:59:40,983 [INFO ]  [0/4923] | Loss: 1.707 | MSE loss: 0.00110 | Bpp loss: 0.9897 | Aux loss: 24.45
+2024-07-09 18:10:10,776 [INFO ]  Test epoch 23: Average losses: Loss: 1.373 | MSE loss: 0.00099 | Bpp loss: 0.7261 | Aux loss: 21.62
+
+2024-07-09 18:10:12,352 [INFO ]  ======Current epoch 24 ======
+2024-07-09 18:10:12,353 [INFO ]  Learning rate: 0.0001
+2024-07-09 18:10:13,037 [INFO ]  [0/4923] | Loss: 1.495 | MSE loss: 0.00094 | Bpp loss: 0.8807 | Aux loss: 22.02
+2024-07-09 18:20:42,016 [INFO ]  Test epoch 24: Average losses: Loss: 1.393 | MSE loss: 0.00102 | Bpp loss: 0.7284 | Aux loss: 18.59
+
+2024-07-09 18:20:42,734 [INFO ]  ======Current epoch 25 ======
+2024-07-09 18:20:42,735 [INFO ]  Learning rate: 0.0001
+2024-07-09 18:20:43,397 [INFO ]  [0/4923] | Loss: 1.683 | MSE loss: 0.00104 | Bpp loss: 1.0068 | Aux loss: 18.73
+2024-07-09 18:31:14,489 [INFO ]  Test epoch 25: Average losses: Loss: 1.402 | MSE loss: 0.00106 | Bpp loss: 0.7135 | Aux loss: 17.30
+
+2024-07-09 18:31:15,117 [INFO ]  ======Current epoch 26 ======
+2024-07-09 18:31:15,117 [INFO ]  Learning rate: 0.0001
+2024-07-09 18:31:15,777 [INFO ]  [0/4923] | Loss: 1.303 | MSE loss: 0.00086 | Bpp loss: 0.7435 | Aux loss: 17.43
+2024-07-09 18:41:46,176 [INFO ]  Test epoch 26: Average losses: Loss: 1.381 | MSE loss: 0.00101 | Bpp loss: 0.7266 | Aux loss: 14.23
+
+2024-07-09 18:41:46,803 [INFO ]  ======Current epoch 27 ======
+2024-07-09 18:41:46,804 [INFO ]  Learning rate: 0.0001
+2024-07-09 18:41:47,462 [INFO ]  [0/4923] | Loss: 1.339 | MSE loss: 0.00078 | Bpp loss: 0.8283 | Aux loss: 14.27
+2024-07-09 18:52:16,592 [INFO ]  Test epoch 27: Average losses: Loss: 1.364 | MSE loss: 0.00098 | Bpp loss: 0.7241 | Aux loss: 12.67
+
+2024-07-09 18:52:17,886 [INFO ]  ======Current epoch 28 ======
+2024-07-09 18:52:17,886 [INFO ]  Learning rate: 0.0001
+2024-07-09 18:52:18,556 [INFO ]  [0/4923] | Loss: 1.860 | MSE loss: 0.00117 | Bpp loss: 1.0991 | Aux loss: 12.94
+2024-07-09 19:02:50,452 [INFO ]  Test epoch 28: Average losses: Loss: 1.406 | MSE loss: 0.00108 | Bpp loss: 0.7036 | Aux loss: 10.78
+
+2024-07-09 19:02:51,139 [INFO ]  ======Current epoch 29 ======
+2024-07-09 19:02:51,139 [INFO ]  Learning rate: 0.0001
+2024-07-09 19:02:51,792 [INFO ]  [0/4923] | Loss: 1.760 | MSE loss: 0.00121 | Bpp loss: 0.9743 | Aux loss: 10.70
+2024-07-09 19:13:21,196 [INFO ]  Test epoch 29: Average losses: Loss: 1.359 | MSE loss: 0.00100 | Bpp loss: 0.7117 | Aux loss: 10.27
+
+2024-07-09 19:13:22,517 [INFO ]  ======Current epoch 30 ======
+2024-07-09 19:13:22,517 [INFO ]  Learning rate: 0.0001
+2024-07-09 19:13:23,199 [INFO ]  [0/4923] | Loss: 1.659 | MSE loss: 0.00105 | Bpp loss: 0.9728 | Aux loss: 10.41
+2024-07-09 19:23:52,511 [INFO ]  Test epoch 30: Average losses: Loss: 1.337 | MSE loss: 0.00096 | Bpp loss: 0.7143 | Aux loss: 8.77
+
+2024-07-09 19:23:54,128 [INFO ]  ======Current epoch 31 ======
+2024-07-09 19:23:54,129 [INFO ]  Learning rate: 0.0001
+2024-07-09 19:23:54,811 [INFO ]  [0/4923] | Loss: 1.314 | MSE loss: 0.00080 | Bpp loss: 0.7962 | Aux loss: 9.10
+2024-07-09 19:34:27,511 [INFO ]  Test epoch 31: Average losses: Loss: 1.321 | MSE loss: 0.00094 | Bpp loss: 0.7127 | Aux loss: 6.72
+
+2024-07-09 19:34:28,887 [INFO ]  ======Current epoch 32 ======
+2024-07-09 19:34:28,887 [INFO ]  Learning rate: 0.0001
+2024-07-09 19:34:29,577 [INFO ]  [0/4923] | Loss: 1.346 | MSE loss: 0.00079 | Bpp loss: 0.8333 | Aux loss: 7.11
+2024-07-09 19:44:59,332 [INFO ]  Test epoch 32: Average losses: Loss: 1.313 | MSE loss: 0.00094 | Bpp loss: 0.6999 | Aux loss: 7.99
+
+2024-07-09 19:45:00,822 [INFO ]  ======Current epoch 33 ======
+2024-07-09 19:45:00,822 [INFO ]  Learning rate: 0.0001
+2024-07-09 19:45:01,567 [INFO ]  [0/4923] | Loss: 1.558 | MSE loss: 0.00094 | Bpp loss: 0.9483 | Aux loss: 8.12

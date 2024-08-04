@@ -1,0 +1,35 @@
+cpu-bind=MASK - bp1-gpu001, task  0  0 [37635]: mask 0x1010 set
+/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/utils/data/dataloader.py:474: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+Traceback (most recent call last):
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 432, in <module>
+    main(sys.argv[1:])
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 401, in main
+    train_one_epoch(
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/examples/train.py", line 169, in train_one_epoch
+    out_net = model(d)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/models/tinylic.py", line 354, in forward
+    z = self.h_a(y)
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/models/tinylic.py", line 320, in h_a
+    x = self.h_a3(x)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/layers.py", line 409, in forward
+    return self.residual_group(x.permute(0,2,3,1)).permute(0,3,1,2) + x
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/layers.py", line 393, in forward
+    x = blk(x)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/layers.py", line 367, in forward
+    x = self.attn(x)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/user/work/dr23820/projects/vc/baseline/image-compression/TinyLIC/compressai/layers/natten/nattencuda.py", line 117, in forward
+    pad_r = max(0, self.window_size - W)
+  File "/user/home/dr23820/.conda/envs/vc/lib/python3.9/site-packages/torch/nn/modules/module.py", line 947, in __getattr__
+    raise AttributeError("'{}' object has no attribute '{}'".format(
+AttributeError: 'NeighborhoodAttention' object has no attribute 'window_size'
