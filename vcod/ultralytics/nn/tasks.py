@@ -79,7 +79,7 @@ except ImportError:
 class BaseModel(nn.Module):
     """The BaseModel class serves as a base class for all the models in the Ultralytics YOLO family."""
 
-    def forward(self, x, *args, **kwargs):
+    def forward(self, x, y, *args, **kwargs):
         """
         Forward pass of the model on a single scale. Wrapper for `_forward_once` method.
 
@@ -90,7 +90,7 @@ class BaseModel(nn.Module):
             (torch.Tensor): The output of the network.
         """
         if isinstance(x, dict):  # for cases of training and validating while training.
-            return self.loss(x, *args, **kwargs)
+            return self.loss(x, y, *args, **kwargs)
         return self.predict(x, *args, **kwargs)
 
     def predict(self, x, profile=False, visualize=False, augment=False, embed=None):
@@ -260,7 +260,7 @@ class BaseModel(nn.Module):
         if verbose:
             LOGGER.info(f"Transferred {len(csd)}/{len(self.model.state_dict())} items from pretrained weights")
 
-    def loss(self, batch, preds=None):
+    def loss(self, compression_batch, original_batch,  preds=None):
         """
         Compute loss.
 
@@ -271,8 +271,9 @@ class BaseModel(nn.Module):
         if not hasattr(self, "criterion"):
             self.criterion = self.init_criterion()
 
-        preds = self.forward(batch["img"]) if preds is None else preds
-        return self.criterion(preds, batch)
+        # preds = self.forward(batch["img"]) if preds is None else preds
+        preds = self.forward(compression_batch["x_hat"], original_batch) if preds is None else preds
+        return self.criterion(preds, original_batch)
 
     def init_criterion(self):
         """Initialize the loss criterion for the BaseModel."""
@@ -303,7 +304,7 @@ class DetectionModel(BaseModel):
             m.inplace = self.inplace
             forward = lambda x: self.forward(x)[0] if isinstance(m, (Segment, Pose, OBB)) else self.forward(x)
             if isinstance(m, v10Detect):
-                forward = lambda x: self.forward(x)["one2many"]
+                forward = lambda x: self.forward(x, x)["one2many"]
             m.stride = torch.tensor([s / x.shape[-2] for x in forward(torch.zeros(1, ch, s, s))])  # forward
             self.stride = m.stride
             m.bias_init()  # only run once
