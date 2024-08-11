@@ -398,7 +398,7 @@ class AutoBackend(nn.Module):
 
         self.__dict__.update(locals())  # assign all variables to self
 
-    def forward(self, im, augment=False, visualize=False, embed=None):
+    def forward(self, im, origin_batch, augment=False, visualize=False, embed=None):
         """
         Runs inference on the YOLOv8 MultiBackend model.
 
@@ -585,7 +585,7 @@ class AutoBackend(nn.Module):
         if any(warmup_types) and (self.device.type != "cpu" or self.triton):
             im = torch.empty(*imgsz, dtype=torch.half if self.fp16 else torch.float, device=self.device)  # input
             for _ in range(2 if self.jit else 1):
-                self.forward(im)  # warmup
+                self.forward(im, _)  # warmup
 
     @staticmethod
     def _model_type(p="path/to/model.pt"):

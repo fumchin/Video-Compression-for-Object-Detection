@@ -10,6 +10,10 @@ import torch
 from torch.nn.functional import unfold, pad
 from timm.models.layers import trunc_normal_
 import warnings
+from torch.utils.file_baton import FileBaton
+
+# 增加文件锁等待时间
+FileBaton.WAIT_INTERVAL = 10.0  # 将等待时间增加到10秒
 
 
 class LegacyNeighborhoodAttention(nn.Module):

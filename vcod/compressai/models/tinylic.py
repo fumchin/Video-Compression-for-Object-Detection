@@ -350,6 +350,13 @@ class TinyLIC(nn.Module):
         return {'relative_position_bias_table'}
 
     def forward(self, x):
+        height, width = x.shape[2], x.shape[3]
+        # make sure the input size is multiple of 64   
+        # x = nn.functional.interpolate(x, size=(height//64*64, width//64*64), mode='bilinear', align_corners=False)
+        # padding on the right and bottom with multiple of 64
+        new_height = height//64*64
+        new_width = width//64*64
+        x = nn.functional.pad(x, (0, new_width-width, 0, new_height-height), mode='constant', value=0)
         y = self.g_a(x)
         z = self.h_a(y)
         _, z_likelihoods = self.entropy_bottleneck(z)
@@ -374,8 +381,12 @@ class TinyLIC(nn.Module):
         y_slices = y.split(tuple(slice_list), 1)
         y_hat_slices = []
         y_likelihood = []
+        # Define target size for interpolation
+        target_size = (params.shape[2], params.shape[3])
 
         for slice_index, y_slice in enumerate(y_slices):
+            # Interpolate y_slice to target size
+            # y_slice = nn.functional.interpolate(y_slice, size=target_size, mode='nearest')
 
             if slice_index == 0:
                 support_slices = torch.cat([params] + y_hat_slices, dim=1)
@@ -508,6 +519,10 @@ class TinyLIC(nn.Module):
 
         # Generate the image reconstruction.
         x_hat = self.g_s(y_hat)
+        
+        
+        # back to original size
+        x_hat = x_hat[:, :, :height, :width]
 
         return {
             "x_hat": x_hat,

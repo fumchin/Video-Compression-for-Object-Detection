@@ -13,6 +13,10 @@ from torch.cuda.amp import custom_fwd, custom_bwd
 from torch.utils.cpp_extension import load, is_ninja_available
 import warnings
 import os
+from torch.utils.file_baton import FileBaton
+
+# 增加文件锁等待时间
+FileBaton.WAIT_INTERVAL = 10.0  # 将等待时间增加到10秒
 
 
 if is_ninja_available():

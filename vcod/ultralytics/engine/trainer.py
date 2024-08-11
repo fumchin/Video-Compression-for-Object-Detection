@@ -8,6 +8,7 @@ Usage:
 
 import math
 import os
+import shutil
 import subprocess
 import time
 import warnings
@@ -156,6 +157,12 @@ class BaseTrainer:
         self.loss_names = ["Loss"]
         self.csv = self.save_dir / "results.csv"
         self.plot_idx = [0, 1, 2]
+        
+        # for compression model
+        self.compression_model = None
+        self.compression_optimizer = None
+        self.aux_optimizer = None
+        self.compression_criterion = None
 
         # Callbacks
         self.callbacks = _callbacks or callbacks.get_default_callbacks()
@@ -175,6 +182,13 @@ class BaseTrainer:
         for callback in self.callbacks.get(event, []):
             callback(self)
     def train_with_compression(self, compression_model, compression_optimizer, aux_optimizer, compression_criterion, world_size=1):
+        # set compression model
+        self.compression_model = compression_model
+        self.compression_optimizer = compression_optimizer
+        self.aux_optimizer = aux_optimizer
+        self.compression_criterion = compression_criterion
+        
+        # Run subprocess if DDP training, else train normally
         """Allow device='', device=None on Multi-GPU systems to default to device=0."""
         if isinstance(self.args.device, str) and len(self.args.device):  # i.e. device='0' or device='0,1,2,3'
             world_size = len(self.args.device.split(","))
@@ -210,7 +224,7 @@ class BaseTrainer:
 
         else:
             # self._do_train(world_size)
-            self._do_train_with_compression(world_size, compression_model, compression_optimizer, aux_optimizer, compression_criterion)
+            self._do_train_with_compression(world_size)
     def train(self):
         """Allow device='', device=None on Multi-GPU systems to default to device=0."""
         if isinstance(self.args.device, str) and len(self.args.device):  # i.e. device='0' or device='0,1,2,3'
@@ -356,7 +370,15 @@ class BaseTrainer:
         self.scheduler.last_epoch = self.start_epoch - 1  # do not move
         self.run_callbacks("on_pretrain_routine_end")
         
-    def _do_train_with_compression(self, world_size=1, compression_model=None, compression_optimizer=None, aux_optimizer=None, compression_criterion=None):
+    def save_checkpoint(self, state, is_best, base_dir, filename="checkpoint.pth.tar"):
+        torch.save(state, base_dir+filename)
+        if is_best:
+            if "yolo" in filename:
+                shutil.copyfile(base_dir+filename, base_dir+"checkpoint_best_loss_yolo.pth.tar")
+            else:
+                shutil.copyfile(base_dir+filename, base_dir+"checkpoint_best_loss_compression.pth.tar")
+        
+    def _do_train_with_compression(self, world_size=1):
         """Train with compression model and YOLO model."""
         if world_size > 1:
             self._setup_ddp(world_size)
@@ -383,7 +405,7 @@ class BaseTrainer:
             self.epoch = epoch
             self.run_callbacks("on_train_epoch_start")
             self.model.train()
-            compression_model.train()
+            self.compression_model.train()
             if RANK != -1:
                 self.train_loader.sampler.set_epoch(epoch)
             pbar = enumerate(self.train_loader)
@@ -397,11 +419,14 @@ class BaseTrainer:
                 pbar = TQDM(enumerate(self.train_loader), total=nb)
             self.tloss = None
             self.optimizer.zero_grad()
-            compression_optimizer.zero_grad()
-            aux_optimizer.zero_grad()
+            self.compression_optimizer.zero_grad()
+            self.aux_optimizer.zero_grad()
+            best_loss = float("inf")
+            is_best = False
+            
             for i, batch in pbar:
-                compression_optimizer.zero_grad()
-                aux_optimizer.zero_grad()
+                self.compression_optimizer.zero_grad()
+                self.aux_optimizer.zero_grad()
                 self.run_callbacks("on_train_batch_start")
                 # Warmup
                 ni = i + nb * epoch
@@ -419,40 +444,33 @@ class BaseTrainer:
                 # Forward through compression model
                 with torch.cuda.amp.autocast(self.amp):
                     batch = self.preprocess_batch(batch)
-                    compressed_batch = compression_model(batch["img"])
+                    compressed_batch = self.compression_model(batch["img"])
                     self.loss, self.loss_items = self.model(compressed_batch, batch)
                     # compression_mse_loss = torch.nn.functional.mse_loss(compressed_batch["x_hat"], batch["img"])
-                    compression_loss = compression_criterion(compressed_batch, batch["img"])
+                    compression_loss = self.compression_criterion(compressed_batch, batch["img"])
                     if RANK != -1:
                         self.loss *= world_size
                     self.tloss = (
                         (self.tloss * i + self.loss_items) / (i + 1) if self.tloss is not None else self.loss_items
                     )
 
-                # Backward
-                # yolo loss
-                # self.scaler.scale(self.loss).backward()
-                # total_loss = self.loss + 0.00001 * compression_loss["loss"]
-                # total_loss = self.loss
-                # self.scaler.scale(total_loss).backward()
-                #backward yolo
-                # torch.nn.utils.clip_grad_norm_(compression_model.parameters(), max_norm=1.0)
-                # total_loss = self.scaler.scale(self.loss) + 0.0001 * compression_loss["loss"]
-                # total_loss.backward()
                 # 缩放损失
                 scaled_loss = self.scaler.scale(self.loss)
                 scaled_compression_loss = self.scaler.scale(compression_loss["loss"])
-
+                total_loss = scaled_loss + scaled_compression_loss
+                is_best = total_loss < best_loss
+                best_loss = min(total_loss, best_loss)
                 # 反向传播
-                scaled_loss.backward(retain_graph=True)
-                scaled_compression_loss.backward()
+                # scaled_loss.backward(retain_graph=True)
+                # scaled_compression_loss.backward()
+                total_loss.backward()
 
                 # Optimize - https://pytorch.org/docs/master/notes/amp_examples.html
                 if ni - last_opt_step >= self.accumulate:
                     # self.optimizer_step()
                     # compression_optimizer.step()
                     # aux_optimizer.step()
-                    self.optimizer_step_compression(compression_model, compression_optimizer, aux_optimizer)
+                    self.optimizer_step_compression()
                     last_opt_step = ni
 
                     # Timed stopping
@@ -479,6 +497,7 @@ class BaseTrainer:
                         self.plot_training_samples(batch, ni)
 
                 self.run_callbacks("on_train_batch_end")
+                
 
             self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}  # for loggers
             self.run_callbacks("on_train_epoch_end")
@@ -495,10 +514,48 @@ class BaseTrainer:
                 if self.args.time:
                     self.stop |= (time.time() - self.train_time_start) > (self.args.time * 3600)
 
-                # Save model
+                # Save model (yolo)
                 if self.args.save or final_epoch:
                     self.save_model()
                     self.run_callbacks("on_model_save")
+                    
+                base_dir = '/home/fumchin/work/baseline/vcod/checkpoints_test/'
+                # save model (yolo)
+                state = {
+                    "epoch": self.epoch,
+                    "best_fitness": self.best_fitness,
+                    "model": deepcopy(de_parallel(self.model)).half(),
+                    "ema": deepcopy(self.ema.ema).half(),
+                    "updates": self.ema.updates,
+                    "optimizer": self.optimizer.state_dict(),
+                    "train_args": vars(self.args),  # save as dict
+                    "date": datetime.now().isoformat(),
+                    "version": __version__,
+                    "license": "AGPL-3.0 (https://ultralytics.com/license)",
+                    "docs": "https://docs.ultralytics.com",
+                }
+                self.save_checkpoint(
+                    state, 
+                    is_best, 
+                    base_dir,
+                    "checkpoint_yolo_" + str(self.epoch) + ".pth.tar"
+                )
+                
+                
+                # Save model (compression)
+                state = {
+                    "epoch": epoch,
+                    "state_dict": self.compression_model.state_dict(),
+                    "loss": compression_loss,
+                    "optimizer": self.compression_optimizer.state_dict(),
+                    "aux_optimizer": self.aux_optimizer.state_dict(),
+                }
+                self.save_checkpoint(
+                    state,
+                    is_best,
+                    base_dir,
+                    "checkpoint_compression_" + str(self.epoch) + ".pth.tar"
+                )
 
             # Scheduler
             t = time.time()
@@ -537,6 +594,8 @@ class BaseTrainer:
             self.run_callbacks("on_train_end")
         torch.cuda.empty_cache()
         self.run_callbacks("teardown")
+        
+    
 
     def _do_train(self, world_size=1):
         """Train completed, evaluate and plot if specified by arguments."""
@@ -722,6 +781,12 @@ class BaseTrainer:
             torch.save(ckpt, self.best)
         if (self.save_period > 0) and (self.epoch > 0) and (self.epoch % self.save_period == 0):
             torch.save(ckpt, self.wdir / f"epoch{self.epoch}.pt")
+            
+    # def save_checkpoint(state, is_best, base_dir, filename):
+    #     torch.save(state, base_dir+filename)
+    #     if is_best:
+    #         shutil.copyfile(base_dir+filename, base_dir+"checkpoint_best_loss.pth.tar")
+
 
     @staticmethod
     def get_dataset(data):
@@ -756,29 +821,29 @@ class BaseTrainer:
         self.optimizer.zero_grad()
         if self.ema:
             self.ema.update(self.model)
-    def optimizer_step_compression(self, compression_model, compression_optimizer, aux_optimizer):
+    def optimizer_step_compression(self):
         """Perform a single step of the training optimizer with gradient clipping and EMA update."""
         # Unscale gradients
         self.scaler.unscale_(self.optimizer)
-        self.scaler.unscale_(compression_optimizer)
-        self.scaler.unscale_(aux_optimizer)
+        self.scaler.unscale_(self.compression_optimizer)
+        self.scaler.unscale_(self.aux_optimizer)
 
         # Clip gradients
         torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=10.0)
-        torch.nn.utils.clip_grad_norm_(compression_model.parameters(), max_norm=10.0)
+        torch.nn.utils.clip_grad_norm_(self.compression_model.parameters(), max_norm=10.0)
 
         # Perform optimizer steps
         self.scaler.step(self.optimizer)
-        self.scaler.step(compression_optimizer)
-        self.scaler.step(aux_optimizer)
+        self.scaler.step(self.compression_optimizer)
+        self.scaler.step(self.aux_optimizer)
 
         # Update the scaler
         self.scaler.update()
 
         # Zero gradients
         self.optimizer.zero_grad()
-        compression_optimizer.zero_grad()
-        aux_optimizer.zero_grad()
+        self.compression_optimizer.zero_grad()
+        self.aux_optimizer.zero_grad()
 
         # EMA update if available
         if self.ema:

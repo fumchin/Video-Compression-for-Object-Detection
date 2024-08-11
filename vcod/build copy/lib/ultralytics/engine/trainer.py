@@ -175,7 +175,7 @@ class BaseTrainer:
         for callback in self.callbacks.get(event, []):
             callback(self)
     
-    def train_with_compression(self, compress_model):
+    def train_with_compression(self, compression_model):
         """Allow device='', device=None on Multi-GPU systems to default to device=0."""
         if isinstance(self.args.device, str) and len(self.args.device):  # i.e. device='0' or device='0,1,2,3'
             world_size = len(self.args.device.split(","))

@@ -34,6 +34,22 @@ from ultralytics.utils import LOGGER, TQDM, callbacks, colorstr, emojis
 from ultralytics.utils.checks import check_imgsz
 from ultralytics.utils.ops import Profile
 from ultralytics.utils.torch_utils import de_parallel, select_device, smart_inference_mode
+from compressai.models.tinylic import TinyLIC
+
+class AverageMeter:
+    """Compute running average."""
+
+    def __init__(self):
+        self.val = 0
+        self.avg = 0
+        self.sum = 0
+        self.count = 0
+
+    def update(self, val, n=1):
+        self.val = val
+        self.sum += val * n
+        self.count += n
+        self.avg = self.sum / self.count
 
 
 class BaseValidator:
@@ -101,7 +117,7 @@ class BaseValidator:
 
         self.plots = {}
         self.callbacks = _callbacks or callbacks.get_default_callbacks()
-
+    
     @smart_inference_mode()
     def __call__(self, trainer=None, model=None):
         """Supports validation of a pre-trained model if passed or a model being trained if trainer is passed (trainer
@@ -113,12 +129,18 @@ class BaseValidator:
             self.device = trainer.device
             self.data = trainer.data
             # self.args.half = self.device.type != "cpu"  # force FP16 val during training
+            # for yolo models
             model = trainer.ema.ema or trainer.model
             model = model.half() if self.args.half else model.float()
+            # for compression models
+            compression_model = trainer.compression_model
+            compression_model = compression_model.half() if self.args.half else compression_model.float()
+            
             # self.model = model
             self.loss = torch.zeros_like(trainer.loss_items, device=trainer.device)
             self.args.plots &= trainer.stopper.possible_stop or (trainer.epoch == trainer.epochs - 1)
             model.eval()
+            compression_model.eval()
         else:
             callbacks.add_integration_callbacks(self)
             model = AutoBackend(
@@ -155,6 +177,12 @@ class BaseValidator:
 
             model.eval()
             model.warmup(imgsz=(1 if pt else self.args.batch, 3, imgsz, imgsz))  # warmup
+            
+            # load compression model
+            compression_model = TinyLIC()
+            checkpoint = torch.load("/home/fumchin/work/baseline/vcod/checkpoints_test/checkpoint_best_loss_compression.pth.tar", map_location=self.device)
+            compression_model.load_state_dict(checkpoint["state_dict"], strict=False)
+            compression_model = compression_model.to('cuda')
 
         self.run_callbacks("on_val_start")
         dt = (
@@ -166,6 +194,12 @@ class BaseValidator:
         bar = TQDM(self.dataloader, desc=self.get_desc(), total=len(self.dataloader))
         self.init_metrics(de_parallel(model))
         self.jdict = []  # empty before each val
+        
+        compression_loss = AverageMeter()
+        compression_bpp_loss = AverageMeter()
+        compression_mse_loss = AverageMeter()
+        compression_aux_loss = AverageMeter()
+
         for batch_i, batch in enumerate(bar):
             self.run_callbacks("on_val_batch_start")
             self.batch_i = batch_i
@@ -175,12 +209,28 @@ class BaseValidator:
 
             # Inference
             with dt[1]:
-                preds = model(batch["img"], augment=augment)
+                compressed_batch = compression_model(batch["img"])
+                if "x_hat" in compressed_batch:
+                    preds = model(compressed_batch["x_hat"], batch, augment=augment)
+                else:
+                    preds = model(batch["img"],batch, augment=augment)
+                # preds = model(batch["img"],batch, augment=augment)
 
             # Loss
             with dt[2]:
                 if self.training:
-                    self.loss += model.loss(batch, preds)[1]
+                    self.loss += model.loss(batch, batch, preds)[1]
+                    # compression loss
+                    compression_out_criterion = trainer.compression_criterion(compressed_batch, batch["img"])
+                    compression_aux_loss.update(compression_model.aux_loss())
+                    compression_bpp_loss.update(compression_out_criterion["bpp_loss"])
+                    compression_loss.update(compression_out_criterion["loss"])
+                    compression_mse_loss.update(compression_out_criterion["mse_loss"])
+                     # Log compression losses
+                    LOGGER.info(f"Compression Aux Loss: {compression_model.aux_loss()}")
+                    LOGGER.info(f"Compression BPP Loss: {compression_out_criterion['bpp_loss']}")
+                    LOGGER.info(f"Compression Loss: {compression_out_criterion['loss']}")
+                    LOGGER.info(f"Compression MSE Loss: {compression_out_criterion['mse_loss']}")
 
             # Postprocess
             with dt[3]:
@@ -221,6 +271,13 @@ class BaseValidator:
                 stats = self.eval_json(stats)  # update stats
             if self.args.plots or self.args.save_json:
                 LOGGER.info(f"Results saved to {colorstr('bold', self.save_dir)}")
+            # Add compression loss information to stats
+            stats.update({
+                'compression_aux_loss': round(float(compression_aux_loss.avg), 5),
+                'compression_bpp_loss': round(float(compression_bpp_loss.avg), 5),
+                'compression_loss': round(float(compression_loss.avg), 5),
+                'compression_mse_loss': round(float(compression_mse_loss.avg), 5)
+            })
             return stats
 
     def match_predictions(self, pred_classes, true_classes, iou, use_scipy=False):

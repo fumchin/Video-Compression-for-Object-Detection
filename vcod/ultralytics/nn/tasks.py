@@ -272,7 +272,11 @@ class BaseModel(nn.Module):
             self.criterion = self.init_criterion()
 
         # preds = self.forward(batch["img"]) if preds is None else preds
-        preds = self.forward(compression_batch["x_hat"], original_batch) if preds is None else preds
+        # preds = self.forward(compression_batch["x_hat"], original_batch) if preds is None else preds
+        if "x_hat" in compression_batch:
+            preds = self.forward(compression_batch["x_hat"], original_batch) if preds is None else preds
+        else:
+            preds = self.forward(compression_batch["img"], original_batch) if preds is None else preds
         return self.criterion(preds, original_batch)
 
     def init_criterion(self):

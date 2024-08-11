@@ -57,19 +57,21 @@ class RateDistortionLoss(nn.Module):
         N, _, H, W = target.size()
         out = {}
         num_pixels = N * H * W
+        # Resize output["x_hat"] to match the size of target
+        x_hat_resized = nn.functional.interpolate(output["x_hat"], size=(H, W), mode='bilinear', align_corners=False)
 
         out["bpp_loss"] = sum(
             (torch.log(likelihoods).sum() / (-math.log(2) * num_pixels))
             for likelihoods in output["likelihoods"].values()
         )
-        out["mse_loss"] = self.mse(output["x_hat"], target)
+        out["mse_loss"] = self.mse(x_hat_resized, target)
         out["loss"] = self.lmbda * 255**2 * out["mse_loss"] + out["bpp_loss"]
 
         return out
 
 def train_merge():
     # yolo_model.train(compress_model=tinylic_model, data='/home/fumchin/work/baseline/vcod/VOC.yaml', epochs=500, imgsz=640, batch=32, workers=0, pretrained=True)
-    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, data='/home/fumchin/work/baseline/vcod/VOC.yaml', epochs=500, imgsz=640, batch=2, workers=8, pretrained=True)
+    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, data='/home/fumchin/work/baseline/vcod/VOC.yaml', epochs=2, imgsz=640, batch=2, workers=8, pretrained=True)
 
 # def train_one_epoch(loader, yolo_model, tinylic_model, optimizer, device):
 #     # yolo_model.train()
@@ -129,7 +131,7 @@ if __name__ == '__main__':
     tinylic_model = TinyLIC()
     tinylic_model = tinylic_model.to(device)
     compression_optimizer, aux_optimizer = configure_optimizers(tinylic_model)
-    compression_criterion = RateDistortionLoss(lmbda=1e-2)
+    compression_criterion = RateDistortionLoss(lmbda=0.025)
     # train_merge()
     
     yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, aux_optimizer=aux_optimizer, compression_criterion=compression_criterion, data='/home/fumchin/work/baseline/vcod/VOC.yaml', epochs=500, imgsz=320, batch=8, workers=4, pretrained=True)
