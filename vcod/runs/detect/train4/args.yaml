@@ -1,6 +1,6 @@
 task: detect
 mode: train
-model: /home/fumchin/work/baseline/object-detection/yolov10/runs/detect/train12/weights/last.pt
+model: /home/englishassignment123/work/baseline/object-detection/yolov10/runs/detect/train12/weights/last.pt
 data: VOC.yaml
 epochs: 500
 time: null

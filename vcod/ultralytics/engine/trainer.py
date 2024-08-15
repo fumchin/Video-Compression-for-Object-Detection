@@ -163,6 +163,7 @@ class BaseTrainer:
         self.compression_optimizer = None
         self.aux_optimizer = None
         self.compression_criterion = None
+        self.base_dir = None
 
         # Callbacks
         self.callbacks = _callbacks or callbacks.get_default_callbacks()
@@ -181,12 +182,13 @@ class BaseTrainer:
         """Run all existing callbacks associated with a particular event."""
         for callback in self.callbacks.get(event, []):
             callback(self)
-    def train_with_compression(self, compression_model, compression_optimizer, aux_optimizer, compression_criterion, world_size=1):
+    def train_with_compression(self, compression_model, compression_optimizer, aux_optimizer, compression_criterion, base_dir, world_size=1):
         # set compression model
         self.compression_model = compression_model
         self.compression_optimizer = compression_optimizer
         self.aux_optimizer = aux_optimizer
         self.compression_criterion = compression_criterion
+        self.base_dir = base_dir
         
         # Run subprocess if DDP training, else train normally
         """Allow device='', device=None on Multi-GPU systems to default to device=0."""
@@ -519,7 +521,7 @@ class BaseTrainer:
                     self.save_model()
                     self.run_callbacks("on_model_save")
                     
-                base_dir = '/home/fumchin/work/baseline/vcod/checkpoints_test/'
+                # base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q3/'
                 # save model (yolo)
                 state = {
                     "epoch": self.epoch,
@@ -537,7 +539,7 @@ class BaseTrainer:
                 self.save_checkpoint(
                     state, 
                     is_best, 
-                    base_dir,
+                    self.base_dir,
                     "checkpoint_yolo_" + str(self.epoch) + ".pth.tar"
                 )
                 
@@ -553,7 +555,7 @@ class BaseTrainer:
                 self.save_checkpoint(
                     state,
                     is_best,
-                    base_dir,
+                    self.base_dir,
                     "checkpoint_compression_" + str(self.epoch) + ".pth.tar"
                 )
 

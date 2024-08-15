@@ -8,6 +8,13 @@ import torch.optim as optim
 # import YOLODataset
 from ultralytics import YOLOv10
 from compressai.models import TinyLIC
+from enum import Enum
+
+class Lambda(Enum):
+    q1 = 0.0018
+    q3 = 0.0067
+    q6 = 0.0483
+    q8 = 0.18
 
 def configure_optimizers(net, lr=1e-4):
     """Separate parameters for the main optimizer and the auxiliary optimizer.
@@ -70,8 +77,8 @@ class RateDistortionLoss(nn.Module):
         return out
 
 def train_merge():
-    # yolo_model.train(compress_model=tinylic_model, data='/home/fumchin/work/baseline/vcod/VOC.yaml', epochs=500, imgsz=640, batch=32, workers=0, pretrained=True)
-    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, data='/home/fumchin/work/baseline/vcod/VOC.yaml', epochs=2, imgsz=640, batch=2, workers=8, pretrained=True)
+    # yolo_model.train(compress_model=tinylic_model, data='/home/englishassignment123/work/baseline/vcod/VOC.yaml', epochs=500, imgsz=640, batch=32, workers=0, pretrained=True)
+    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, data='/home/englishassignment123/work/baseline/vcod/VOC.yaml', epochs=2, imgsz=640, batch=2, workers=8, pretrained=True)
 
 # def train_one_epoch(loader, yolo_model, tinylic_model, optimizer, device):
 #     # yolo_model.train()
@@ -126,12 +133,35 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-    yolo_model = YOLOv10('/home/fumchin/work/baseline/vcod/jameslahm/yolov10n.pt')
+    yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n.pt')
     yolo_model = yolo_model.to(device)
-    tinylic_model = TinyLIC()
+    tinylic_model = TinyLIC() 
     tinylic_model = tinylic_model.to(device)
     compression_optimizer, aux_optimizer = configure_optimizers(tinylic_model)
-    compression_criterion = RateDistortionLoss(lmbda=0.025)
+    
+    cruuent_q = Lambda.q1
+    base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q1/'
+    
+    if(cruuent_q == Lambda.q1):
+        checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q1.pth.tar')
+        compression_criterion = RateDistortionLoss(lmbda=Lambda.q1.value)
+        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q1/'
+    elif(cruuent_q == Lambda.q3):
+        checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q3.pth.tar')
+        compression_criterion = RateDistortionLoss(lmbda=Lambda.q3.value)
+        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q3/'
+    elif(cruuent_q == Lambda.q6):
+        checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q6.pth.tar')
+        compression_criterion = RateDistortionLoss(lmbda=Lambda.q6.value)
+        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q6/'
+    elif(cruuent_q == Lambda.q8):
+        checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q8.pth.tar')
+        compression_criterion = RateDistortionLoss(lmbda=Lambda.q8.value)
+        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q8/'
+    
+    tinylic_model.load_state_dict(checkpoint["state_dict"], strict=False)
+    # compression_optimizer.load_state_dict(checkpoint["optimizer"])
+    # aux_optimizer.load_state_dict(checkpoint["aux_optimizer"])
     # train_merge()
     
-    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, aux_optimizer=aux_optimizer, compression_criterion=compression_criterion, data='/home/fumchin/work/baseline/vcod/VOC.yaml', epochs=500, imgsz=320, batch=8, workers=4, pretrained=True)
+    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, aux_optimizer=aux_optimizer, compression_criterion=compression_criterion, data='/home/englishassignment123/work/baseline/vcod/VOC.yaml', base_dir=base_dir, epochs=500, imgsz=256, batch=8, workers=4, pretrained=True)

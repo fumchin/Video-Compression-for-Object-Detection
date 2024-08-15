@@ -180,9 +180,11 @@ class BaseValidator:
             
             # load compression model
             compression_model = TinyLIC()
-            checkpoint = torch.load("/home/fumchin/work/baseline/vcod/checkpoints_test/checkpoint_best_loss_compression.pth.tar", map_location=self.device)
+            checkpoint = torch.load("/home/englishassignment123/work/baseline/vcod/checkpoints_q3/checkpoint_best_loss_compression.pth.tar", map_location=self.device)
+            print(f"Loading compression model from path /home/englishassignment123/work/baseline/vcod/checkpoints_q3/checkpoint_best_loss_compression.pth.tar")
             compression_model.load_state_dict(checkpoint["state_dict"], strict=False)
             compression_model = compression_model.to('cuda')
+            compression_model.eval
 
         self.run_callbacks("on_val_start")
         dt = (
