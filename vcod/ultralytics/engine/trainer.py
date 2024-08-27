@@ -15,7 +15,7 @@ import warnings
 from copy import deepcopy
 from datetime import datetime, timedelta
 from pathlib import Path
-
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torch import distributed as dist
@@ -164,6 +164,14 @@ class BaseTrainer:
         self.aux_optimizer = None
         self.compression_criterion = None
         self.base_dir = None
+        
+        self.epoch_losses_train = {
+            'loss_train': [],
+            'compression_loss_train': [],
+            'total_loss_train': [],
+            'scaled_loss_train': [],
+            'scaled_compression_loss_train': []
+        }
 
         # Callbacks
         self.callbacks = _callbacks or callbacks.get_default_callbacks()
@@ -379,6 +387,64 @@ class BaseTrainer:
                 shutil.copyfile(base_dir+filename, base_dir+"checkpoint_best_loss_yolo.pth.tar")
             else:
                 shutil.copyfile(base_dir+filename, base_dir+"checkpoint_best_loss_compression.pth.tar")
+                
+    def plot_losses(self):
+        """Plot different losses after training."""
+        plt.figure(figsize=(15, 10))
+        
+        # 绘制 loss
+        plt.subplot(2, 3, 1)
+        plt.plot(self.epoch_losses_train['loss_train'], label='Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.title('Loss')
+        plt.grid(True)
+        plt.autoscale(axis='y')
+        
+        # 绘制 compression_loss
+        plt.subplot(2, 3, 2)
+        plt.plot(self.epoch_losses_train['compression_loss_train'], label='Compression Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Compression Loss')
+        plt.title('Compression Loss')
+        plt.grid(True)
+        plt.autoscale(axis='y')
+        
+        
+        # if self.current_epoch > 2:
+        # 绘制 total_loss
+        plt.subplot(2, 3, 3)
+        plt.plot(self.epoch_losses_train['total_loss_train'], label='Total Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Total Loss')
+        plt.title('Total Loss')
+        plt.grid(True)
+        plt.autoscale(axis='y')
+        
+        # 绘制 scaled_loss
+        plt.subplot(2, 3, 4)
+        plt.plot(self.epoch_losses_train['scaled_loss_train'], label='Scaled Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Scaled Loss')
+        plt.title('Scaled Loss')
+        plt.grid(True)
+        plt.autoscale(axis='y')
+        # only save after epoch > 2
+        
+        # 绘制 scaled_compression_loss
+        plt.subplot(2, 3, 5)
+        plt.plot(self.epoch_losses_train['scaled_compression_loss_train'], label='Scaled Compression Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Scaled Compression Loss')
+        plt.title('Scaled Compression Loss')
+        plt.grid(True)
+        plt.autoscale(axis='y')
+        # set ylim if loss larger than 1
+        
+        plt.tight_layout()
+        plt.savefig(self.base_dir + 'training_losses.png')
+        # plt.show()
+
         
     def _do_train_with_compression(self, world_size=1):
         """Train with compression model and YOLO model."""
@@ -403,6 +469,8 @@ class BaseTrainer:
             base_idx = (self.epochs - self.args.close_mosaic) * nb
             self.plot_idx.extend([base_idx, base_idx + 1, base_idx + 2])
         epoch = self.start_epoch
+        best_val_loss = float("inf")
+        is_best = False
         while True:
             self.epoch = epoch
             self.run_callbacks("on_train_epoch_start")
@@ -423,8 +491,15 @@ class BaseTrainer:
             self.optimizer.zero_grad()
             self.compression_optimizer.zero_grad()
             self.aux_optimizer.zero_grad()
-            best_loss = float("inf")
-            is_best = False
+            
+            
+            loss_train_sum = 0
+            compression_loss_train_sum = 0
+            total_loss_train_sum = 0
+            scaled_loss_train_sum = 0
+            scaled_compression_loss_train_sum = 0
+            num_batches  = len(self.train_loader)
+            
             
             for i, batch in pbar:
                 self.compression_optimizer.zero_grad()
@@ -447,7 +522,13 @@ class BaseTrainer:
                 with torch.cuda.amp.autocast(self.amp):
                     batch = self.preprocess_batch(batch)
                     compressed_batch = self.compression_model(batch["img"])
-                    self.loss, self.loss_items = self.model(compressed_batch, batch)
+                    # self.loss, self.loss_items = self.model(compressed_batch, batch)
+                    self.loss1, self.loss_items1 = self.model(compressed_batch, batch)
+                    self.loss2, self.loss_items2 = self.model(batch, batch)
+                    
+                    self.loss = self.loss1 + self.loss2
+                    self.loss_items = self.loss_items1 + self.loss_items2
+                    
                     # compression_mse_loss = torch.nn.functional.mse_loss(compressed_batch["x_hat"], batch["img"])
                     compression_loss = self.compression_criterion(compressed_batch, batch["img"])
                     if RANK != -1:
@@ -459,9 +540,18 @@ class BaseTrainer:
                 # 缩放损失
                 scaled_loss = self.scaler.scale(self.loss)
                 scaled_compression_loss = self.scaler.scale(compression_loss["loss"])
-                total_loss = scaled_loss + scaled_compression_loss
-                is_best = total_loss < best_loss
-                best_loss = min(total_loss, best_loss)
+                total_loss = scaled_loss + 0.05 * scaled_compression_loss
+                # total_loss = scaled_loss + compression_loss["loss"]
+                
+                loss_train_sum += self.loss.item()
+                compression_loss_train_sum += compression_loss["loss"].item()
+                total_loss_train_sum += total_loss.item()
+                scaled_loss_train_sum += scaled_loss.item()
+                scaled_compression_loss_train_sum += scaled_compression_loss.item()
+            
+                
+                
+                
                 # 反向传播
                 # scaled_loss.backward(retain_graph=True)
                 # scaled_compression_loss.backward()
@@ -499,6 +589,17 @@ class BaseTrainer:
                         self.plot_training_samples(batch, ni)
 
                 self.run_callbacks("on_train_batch_end")
+            
+            # 
+            self.epoch_losses_train['loss_train'].append(loss_train_sum / num_batches)
+            self.epoch_losses_train['compression_loss_train'].append(compression_loss_train_sum / num_batches)
+            self.epoch_losses_train['total_loss_train'].append(total_loss_train_sum / num_batches)
+            self.epoch_losses_train['scaled_loss_train'].append(scaled_loss_train_sum / num_batches)
+            self.epoch_losses_train['scaled_compression_loss_train'].append(scaled_compression_loss_train_sum / num_batches)
+            
+            self.plot_losses()
+            
+                
                 
 
             self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}  # for loggers
@@ -523,6 +624,10 @@ class BaseTrainer:
                     
                 # base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q3/'
                 # save model (yolo)
+                if self.metrics["val_total_loss"] < best_val_loss:
+                    best_val_loss = self.metrics["val_total_loss"]
+                    is_best = True
+                    
                 state = {
                     "epoch": self.epoch,
                     "best_fitness": self.best_fitness,
@@ -1039,7 +1144,7 @@ class BaseTrainer:
             )
             nc = getattr(model, "nc", 10)  # number of classes
             lr_fit = round(0.002 * 5 / (4 + nc), 6)  # lr0 fit equation to 6 decimal places
-            name, lr, momentum = ("SGD", 1e-03, 0.9) if iterations > 10000 else ("AdamW", lr_fit, 0.9)
+            name, lr, momentum = ("SGD", 1e-3, 0.9) if iterations > 10000 else ("AdamW", lr_fit, 0.9)
             self.args.warmup_bias_lr = 0.0  # no higher than 0.01 for Adam
 
         for module_name, module in model.named_modules():

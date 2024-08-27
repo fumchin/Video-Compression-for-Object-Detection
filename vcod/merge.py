@@ -16,7 +16,7 @@ class Lambda(Enum):
     q6 = 0.0483
     q8 = 0.18
 
-def configure_optimizers(net, lr=1e-4):
+def configure_optimizers(net, lr=1e-7):
     """Separate parameters for the main optimizer and the auxiliary optimizer.
     Return two optimizers"""
 
@@ -65,13 +65,13 @@ class RateDistortionLoss(nn.Module):
         out = {}
         num_pixels = N * H * W
         # Resize output["x_hat"] to match the size of target
-        x_hat_resized = nn.functional.interpolate(output["x_hat"], size=(H, W), mode='bilinear', align_corners=False)
+        # x_hat_resized = nn.functional.interpolate(output["x_hat"], size=(H, W), mode='bilinear', align_corners=False)
 
         out["bpp_loss"] = sum(
             (torch.log(likelihoods).sum() / (-math.log(2) * num_pixels))
             for likelihoods in output["likelihoods"].values()
         )
-        out["mse_loss"] = self.mse(x_hat_resized, target)
+        out["mse_loss"] = self.mse(output["x_hat"], target)
         out["loss"] = self.lmbda * 255**2 * out["mse_loss"] + out["bpp_loss"]
 
         return out
@@ -133,35 +133,49 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-    yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n.pt')
+    yolo_model = YOLOv10('/home/englishassignment123/work/baseline/runs/detect/train7/weights/best.pt')
     yolo_model = yolo_model.to(device)
     tinylic_model = TinyLIC() 
     tinylic_model = tinylic_model.to(device)
     compression_optimizer, aux_optimizer = configure_optimizers(tinylic_model)
     
-    cruuent_q = Lambda.q1
-    base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q1/'
+    cruuent_q = Lambda.q3
+    # base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q6_0822/'
     
     if(cruuent_q == Lambda.q1):
+        # yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n.pt')
+        # yolo_model = yolo_model.to(device)
+        
         checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q1.pth.tar')
         compression_criterion = RateDistortionLoss(lmbda=Lambda.q1.value)
-        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q1/'
+        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q1_pretrained_2/'
     elif(cruuent_q == Lambda.q3):
+        # yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n_q3_pretrained.pt')
+        # yolo_model = yolo_model.to(device)
+        
         checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q3.pth.tar')
         compression_criterion = RateDistortionLoss(lmbda=Lambda.q3.value)
-        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q3/'
+        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q3_finetuned_dual/'
     elif(cruuent_q == Lambda.q6):
+        # yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n_q6_pretrained.pt')
+        # yolo_model = yolo_model.to(device)
+        
         checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q6.pth.tar')
         compression_criterion = RateDistortionLoss(lmbda=Lambda.q6.value)
-        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q6/'
+        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q6_pretrained_dual'
     elif(cruuent_q == Lambda.q8):
+        # yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n.pt')
+        # yolo_model = yolo_model.to(device)
+        
         checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q8.pth.tar')
         compression_criterion = RateDistortionLoss(lmbda=Lambda.q8.value)
-        base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q8/'
+        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q8_pretrained_2/'
     
     tinylic_model.load_state_dict(checkpoint["state_dict"], strict=False)
     # compression_optimizer.load_state_dict(checkpoint["optimizer"])
     # aux_optimizer.load_state_dict(checkpoint["aux_optimizer"])
     # train_merge()
+    if not Path(base_dir).exists():
+        Path(base_dir).mkdir(parents=True, exist_ok=True)
     
-    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, aux_optimizer=aux_optimizer, compression_criterion=compression_criterion, data='/home/englishassignment123/work/baseline/vcod/VOC.yaml', base_dir=base_dir, epochs=500, imgsz=256, batch=8, workers=4, pretrained=True)
+    yolo_model.train_with_compression(compression_model=tinylic_model, compression_optimizer=compression_optimizer, aux_optimizer=aux_optimizer, compression_criterion=compression_criterion, data='/home/englishassignment123/work/baseline/vcod/VOC.yaml', base_dir=base_dir, epochs=400, imgsz=256, batch=4, workers=4, pretrained=True)

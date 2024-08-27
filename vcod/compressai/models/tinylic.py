@@ -354,8 +354,16 @@ class TinyLIC(nn.Module):
         # make sure the input size is multiple of 64   
         # x = nn.functional.interpolate(x, size=(height//64*64, width//64*64), mode='bilinear', align_corners=False)
         # padding on the right and bottom with multiple of 64
-        new_height = height//64*64
-        new_width = width//64*64
+        if height % 64 != 0:
+            new_height = (height//64 + 1)*64
+        else:
+            new_height = height
+
+        if width % 64 != 0:
+            new_width = (width//64 + 1)*64
+        else:
+            new_width = width
+
         x = nn.functional.pad(x, (0, new_width-width, 0, new_height-height), mode='constant', value=0)
         y = self.g_a(x)
         z = self.h_a(y)

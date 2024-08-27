@@ -595,6 +595,7 @@ class Model(nn.Module):
         compression_optimizer=None,
         aux_optimizer=None,
         compression_criterion=None,
+        base_dir=None,
         trainer=None,
         **kwargs,
     ):
@@ -631,7 +632,7 @@ class Model(nn.Module):
                     pass
 
         self.trainer.hub_session = self.session  # attach optional HUB session
-        self.trainer.train_with_compression(compression_model, compression_optimizer, aux_optimizer, compression_criterion)
+        self.trainer.train_with_compression(compression_model, compression_optimizer, aux_optimizer, compression_criterion, base_dir)
         # Update model and cfg after training
         if RANK in (-1, 0):
             ckpt = self.trainer.best if self.trainer.best.exists() else self.trainer.last

@@ -180,8 +180,8 @@ class BaseValidator:
             
             # load compression model
             compression_model = TinyLIC()
-            checkpoint = torch.load("/home/englishassignment123/work/baseline/vcod/checkpoints_q3/checkpoint_best_loss_compression.pth.tar", map_location=self.device)
-            print(f"Loading compression model from path /home/englishassignment123/work/baseline/vcod/checkpoints_q3/checkpoint_best_loss_compression.pth.tar")
+            checkpoint = torch.load("/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q3_pretrained/checkpoint_best_loss_compression.pth.tar", map_location=self.device)
+            print(f"Loading compression model from path /home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q3_pretrained/checkpoint_best_loss_compression.pth.tar")
             compression_model.load_state_dict(checkpoint["state_dict"], strict=False)
             compression_model = compression_model.to('cuda')
             compression_model.eval
@@ -196,7 +196,8 @@ class BaseValidator:
         bar = TQDM(self.dataloader, desc=self.get_desc(), total=len(self.dataloader))
         self.init_metrics(de_parallel(model))
         self.jdict = []  # empty before each val
-        
+    
+        detection_loss = AverageMeter()
         compression_loss = AverageMeter()
         compression_bpp_loss = AverageMeter()
         compression_mse_loss = AverageMeter()
@@ -212,6 +213,8 @@ class BaseValidator:
             # Inference
             with dt[1]:
                 compressed_batch = compression_model(batch["img"])
+                compression_out_criterion = trainer.compression_criterion(compressed_batch, batch["img"])
+                
                 if "x_hat" in compressed_batch:
                     preds = model(compressed_batch["x_hat"], batch, augment=augment)
                 else:
@@ -220,19 +223,16 @@ class BaseValidator:
 
             # Loss
             with dt[2]:
-                if self.training:
-                    self.loss += model.loss(batch, batch, preds)[1]
-                    # compression loss
-                    compression_out_criterion = trainer.compression_criterion(compressed_batch, batch["img"])
-                    compression_aux_loss.update(compression_model.aux_loss())
-                    compression_bpp_loss.update(compression_out_criterion["bpp_loss"])
-                    compression_loss.update(compression_out_criterion["loss"])
-                    compression_mse_loss.update(compression_out_criterion["mse_loss"])
-                     # Log compression losses
-                    LOGGER.info(f"Compression Aux Loss: {compression_model.aux_loss()}")
-                    LOGGER.info(f"Compression BPP Loss: {compression_out_criterion['bpp_loss']}")
-                    LOGGER.info(f"Compression Loss: {compression_out_criterion['loss']}")
-                    LOGGER.info(f"Compression MSE Loss: {compression_out_criterion['mse_loss']}")
+                # if self.training:
+                self.loss += model.loss(batch, batch, preds)[1]
+                # compression loss
+                detection_loss.update(model.loss(batch, batch, preds)[1].mean(axis = 0))
+                
+                compression_aux_loss.update(compression_model.aux_loss())
+                compression_bpp_loss.update(compression_out_criterion["bpp_loss"])
+                compression_loss.update(compression_out_criterion["loss"])
+                compression_mse_loss.update(compression_out_criterion["mse_loss"])
+
 
             # Postprocess
             with dt[3]:
@@ -244,6 +244,17 @@ class BaseValidator:
                 self.plot_predictions(batch, preds, batch_i)
 
             self.run_callbacks("on_val_batch_end")
+        # Log compression losses
+        LOGGER.info(f"Compression Aux Loss: {compression_model.aux_loss()}")
+        LOGGER.info(f"Compression BPP Loss: {compression_out_criterion['bpp_loss']}")
+        LOGGER.info(f"Compression Loss: {compression_out_criterion['loss']}")
+        LOGGER.info(f"Compression MSE Loss: {compression_out_criterion['mse_loss']}")
+        LOGGER.info(f"Detection Loss: {detection_loss.avg}")
+        # val_total_loss = self.loss.cpu() / len(self.dataloader) + compression_out_criterion["loss"].cpu()
+        # val_total_loss = self.loss.item() / len(self.dataloader) + compression_out_criterion["loss"]
+        val_total_loss = detection_loss.avg + compression_out_criterion["loss"]
+        LOGGER.info(f"Total Loss: {val_total_loss}")
+        
         stats = self.get_stats()
         self.check_stats(stats)
         self.speed = dict(zip(self.speed.keys(), (x.t / len(self.dataloader.dataset) * 1e3 for x in dt)))
@@ -251,6 +262,15 @@ class BaseValidator:
         if not (self.args.save_json and self.is_coco and len(self.jdict)):
             self.print_results()
         self.run_callbacks("on_val_end")
+        # Add compression loss information to stats
+        stats.update({
+            'compression_aux_loss': round(float(compression_aux_loss.avg), 5),
+            'compression_bpp_loss': round(float(compression_bpp_loss.avg), 5),
+            'compression_loss': round(float(compression_loss.avg), 5),
+            'compression_mse_loss': round(float(compression_mse_loss.avg), 5),
+            'val_total_loss': round(float(val_total_loss), 5)
+        })
+
         if self.training:
             model.float()
             if self.args.save_json and self.jdict:
@@ -273,13 +293,7 @@ class BaseValidator:
                 stats = self.eval_json(stats)  # update stats
             if self.args.plots or self.args.save_json:
                 LOGGER.info(f"Results saved to {colorstr('bold', self.save_dir)}")
-            # Add compression loss information to stats
-            stats.update({
-                'compression_aux_loss': round(float(compression_aux_loss.avg), 5),
-                'compression_bpp_loss': round(float(compression_bpp_loss.avg), 5),
-                'compression_loss': round(float(compression_loss.avg), 5),
-                'compression_mse_loss': round(float(compression_mse_loss.avg), 5)
-            })
+        
             return stats
 
     def match_predictions(self, pred_classes, true_classes, iou, use_scipy=False):
