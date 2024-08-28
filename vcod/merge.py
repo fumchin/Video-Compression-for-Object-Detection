@@ -139,7 +139,7 @@ if __name__ == '__main__':
     tinylic_model = tinylic_model.to(device)
     compression_optimizer, aux_optimizer = configure_optimizers(tinylic_model)
     
-    cruuent_q = Lambda.q3
+    cruuent_q = Lambda.q8
     # base_dir = '/home/englishassignment123/work/baseline/vcod/checkpoints_q6_0822/'
     
     if(cruuent_q == Lambda.q1):
@@ -148,7 +148,7 @@ if __name__ == '__main__':
         
         checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q1.pth.tar')
         compression_criterion = RateDistortionLoss(lmbda=Lambda.q1.value)
-        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q1_pretrained_2/'
+        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q1_finetuned_dual/'
     elif(cruuent_q == Lambda.q3):
         # yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n_q3_pretrained.pt')
         # yolo_model = yolo_model.to(device)
@@ -162,14 +162,14 @@ if __name__ == '__main__':
         
         checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q6.pth.tar')
         compression_criterion = RateDistortionLoss(lmbda=Lambda.q6.value)
-        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q6_pretrained_dual'
+        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q6_finetuned_dual'
     elif(cruuent_q == Lambda.q8):
         # yolo_model = YOLOv10('/home/englishassignment123/work/baseline/vcod/jameslahm/yolov10n.pt')
         # yolo_model = yolo_model.to(device)
         
         checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/pretrain-weight/mse/checkpoint_q8.pth.tar')
         compression_criterion = RateDistortionLoss(lmbda=Lambda.q8.value)
-        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q8_pretrained_2/'
+        base_dir = '/home/englishassignment123/work/baseline/vcod/both_pretrained/checkpoints_q8_finetuned_dual/'
     
     tinylic_model.load_state_dict(checkpoint["state_dict"], strict=False)
     # compression_optimizer.load_state_dict(checkpoint["optimizer"])

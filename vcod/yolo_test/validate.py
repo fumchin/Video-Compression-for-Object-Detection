@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 # Load model
 # model = YOLOv10('/home/englishassignment123/work/baseline/vcod/checkpoints_q3/checkpoint_best_loss_yolo.pth.tar')
-model = YOLOv10('/home/englishassignment123/work/baseline/runs/detect/train11/weights/best.pt');
+model = YOLOv10('/home/englishassignment123/work/baseline/runs/detect/train7/weights/best.pt');
 # checkpoint = torch.load('/home/englishassignment123/work/baseline/vcod/checkpoints_q3/checkpoint_best_loss_yolo.pth.tar')
 # model.load_state_dict(checkpoint["state_dict"])
 
