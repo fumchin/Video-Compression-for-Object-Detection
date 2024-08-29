@@ -1,60 +1,95 @@
-# VCOD Project
+# Integrated YOLOv10 and TinyLIC Compression Model
 
-VCOD is an efficient image compression and object detection project aimed at providing advanced compression algorithms and accurate object detection models.
+This project integrates the YOLOv10 object detection model with the TinyLIC image compression model to jointly train both models. The goal is to achieve a model that not only compresses images effectively but also allows accurate object detection on the compressed images.
 
-## Directory Structure
+## Table of Contents
 
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [Training Workflow](#training-workflow)
+  - [Stage 1: Pre-training Models](#stage-1-pre-training-models)
+  - [Stage 2: Integrated Model Training](#stage-2-integrated-model-training)
+- [Parameters](#parameters)
+- [License](#license)
 
-## File Descriptions
+## Installation
 
-### Main Files
+### Prerequisites
 
-- `app.py`: The main application file responsible for starting and running the entire project.
-- `continue_train.py`: Script for continuing model training.
-- `eval.py`: Script for evaluating model performance.
-- `evaluate_psnr.sh`: Script for evaluating PSNR (Peak Signal-to-Noise Ratio).
-- `coco.yaml`: Configuration file for the COCO dataset.
-- `merge.py`: Script for merging multiple models or datasets.
+Ensure that you have the following installed:
+- Python 3.6 or higher
+- PyTorch
+- ultralytics package (for YOLOv10)
+- compressai package (for TinyLIC)
+- CUDA (optional, for GPU support)
 
-### Functionality of `merge.py`
+### Installation
 
-`merge.py` is a crucial script responsible for merging multiple models or datasets into a unified model or dataset. Its main functionalities include:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/fumchin/Video-Compression-for-Object-Detection.git
+   cd vcod
+   ```
 
-1. **Reading Input**: Reads multiple models or datasets from specified directories or files.
-2. **Data Processing**: Preprocesses the read data, including data cleaning and format conversion.
-3. **Merging Data**: Merges the weights of multiple datasets or models into a unified dataset or model.
-4. **Saving Results**: Saves the merged dataset or model to a specified directory or file.
+2. Install the required Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Below is a simplified example code of `merge.py`:
+## Project Structure
 
-```python
-import os
-import json
+```
+|-- compressai/          # Compression model directory
+|-- ultralytics/         # YOLOv10 model directory
+|-- checkpoints/         # Pretrained weights directory
+|-- scripts/             # Training and utility scripts
+|-- README.md            # Project documentation
+|-- VOC.yaml             # Dataset configuration
+|-- merge.py             # Main script to train integrated model
+```
 
-def load_data(file_path):
-    with open(file_path, 'r') as file:
-        return json.load(file)
+## Usage
 
-def merge_data(data_list):
-    merged_data = {}
-    for data in data_list:
-        for key, value in data.items():
-            if key in merged_data:
-                merged_data[key].extend(value)
-            else:
-                merged_data[key] = value
-    return merged_data
+### Training Workflow
 
-def save_data(data, output_path):
-    with open(output_path, 'w') as file:
-        json.dump(data, file)
+The training process is divided into two main stages:
 
-def main(input_paths, output_path):
-    data_list = [load_data(path) for path in input_paths]
-    merged_data = merge_data(data_list)
-    save_data(merged_data, output_path)
+#### Stage 1: Pre-training Models
 
-if __name__ == "__main__":
-    input_paths = ["data1.json", "data2.json"]
-    output_path = "merged_data.json"
-    main(input_paths, output_path)
+- **YOLOv10**: Fine-tune the YOLOv10 model using the VOC dataset.
+- **TinyLIC**: Use pre-trained TinyLIC models directly.
+
+#### Stage 2: Integrated Model Training
+
+In this stage, the pre-trained YOLOv10 and TinyLIC models are combined, and the integrated model is trained to optimize both object detection and image compression simultaneously.
+
+### Running the Training Script
+
+1. Pre-train the YOLOv10 and TinyLIC models separately if not done already.
+   
+2. Start the integrated training by running the `merge.py` script:
+
+   ```bash
+   python merge.py
+   ```
+
+   This script will:
+   - Load pre-trained YOLOv10 and TinyLIC models.
+   - Train the integrated model using the VOC dataset.
+
+3. The training configuration, such as the number of epochs, batch size, and image size, can be adjusted directly in the `merge.py` script.
+
+## Parameters
+
+- `Lambda`: Enum for different compression levels (`q1`, `q3`, `q6`, `q8`).
+- `lr`: Learning rate for optimizers.
+- `imgsz`: Image size for training (default is 256).
+- `batch`: Batch size for training (default is 4).
+- `epochs`: Number of epochs for training (default is 400).
+- `data`: Path to the dataset configuration file.
+- `base_dir`: Directory to save model checkpoints.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
